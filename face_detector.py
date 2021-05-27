@@ -12,10 +12,11 @@ grayscale_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 # detect faces, guves us top left and off set from that for right point
 face_coor = trained_face_data.detectMultiScale(grayscale_img)
 
-# draw rectangle around face
-(x, y, w, h) = face_coor[0]
-# coor of top left -> add x1 x2, y1 y2 -> color -> thickness
-cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+# loop through all faces found in image
+for (x, y, w, h) in face_coor:
+    # draw rectangle around face
+    # coor of top left -> add x1 x2, y1 y2 -> color -> thickness
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
 print(face_coor)
 
