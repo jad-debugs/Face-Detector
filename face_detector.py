@@ -1,31 +1,33 @@
 import cv2
 
-# loading trained images thanks to opencv
+# loading trained data thanks to opencv
 trained_face_data = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 # load in image that is detected
-img = cv2.imread('isayama.jpg')
+# img = cv2.imread('isayama.jpg')
+# captures data from default cam
+webcam = cv2.VideoCapture(0)
 
-# converted to gray scale so easier on machine
-grayscale_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+# iterate over all framers until stopped
+while True:
+    # read current frame
+    successful_frame_read, frame = webcam.read()
+    # convert to grayscale
+    grayscale_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-# detect faces, guves us top left and off set from that for right point
-face_coor = trained_face_data.detectMultiScale(grayscale_img)
+    # get coor of face    
+    face_coor = trained_face_data.detectMultiScale(grayscale_img)
 
-# loop through all faces found in image
-for (x, y, w, h) in face_coor:
-    # draw rectangle around face
-    # coor of top left -> add x1 x2, y1 y2 -> color -> thickness
-    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    for (x, y, w, h) in face_coor:
+        # draw rectangle around face
+        # coor of top left -> add x1 x2, y1 y2 -> color -> thickness
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2) 
 
-print(face_coor)
+    cv2.imshow('Face Detection', frame)
+    key = cv2.waitKey(1)
 
-# showing image, first param is name of window
-cv2.imshow('Face detector', img)
+    # if q or Q is tapped, then quit
+    if key == 81 or key == 113:
+        break
 
-# this will wait until a key is pressed (so you can view image)
-cv2.waitKey()
-
-
-
-print("Code completed")
+webcam.release()
