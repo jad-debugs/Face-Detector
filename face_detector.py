@@ -1,4 +1,4 @@
-import cv2
+import cv2, random
 
 # loading trained data thanks to opencv
 trained_face_data = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -21,7 +21,7 @@ while True:
     for (x, y, w, h) in face_coor:
         # draw rectangle around face
         # coor of top left -> add x1 x2, y1 y2 -> color -> thickness
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2) 
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (random.randint(0,255), random.randint(0,255), random.randint(0,255)), 2) 
 
     cv2.imshow('Face Detection', frame)
     key = cv2.waitKey(1)
